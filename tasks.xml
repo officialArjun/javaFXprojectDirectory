@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_211" class="java.beans.XMLDecoder">
+ <object class="java.util.HashMap">
+  <void method="put">
+   <string>Project4</string>
+   <boolean>false</boolean>
+  </void>
+  <void method="put">
+   <string>Project3</string>
+   <boolean>true</boolean>
+  </void>
+  <void method="put">
+   <string>Project2</string>
+   <boolean>true</boolean>
+  </void>
+  <void method="put">
+   <string>Project1</string>
+   <boolean>false</boolean>
+  </void>
+ </object>
+</java>
