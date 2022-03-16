@@ -3,7 +3,7 @@
  <object class="java.util.HashMap">
   <void method="put">
    <string>Project4</string>
-   <boolean>false</boolean>
+   <boolean>true</boolean>
   </void>
   <void method="put">
    <string>Project3</string>
@@ -15,7 +15,7 @@
   </void>
   <void method="put">
    <string>Project1</string>
-   <boolean>false</boolean>
+   <boolean>true</boolean>
   </void>
  </object>
 </java>

@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import javafx.application.Application;
@@ -36,11 +38,39 @@ import javafx.stage.WindowEvent;
 public class TreeViewIssue extends Application {
     int count=0;
     HashMap<String,Boolean> hMap = new HashMap<String,Boolean>();
+    //ArrayList<TreeItem<String>> lst=new ArrayList<>();
+    ArrayList<String> lst=new ArrayList<>();
+    
     void cpyToMap(HashMap<String,Boolean> readMap){
         this.hMap.clear();
         this.hMap.putAll(readMap);
     }
-   
+//    public void getNonLeafProject(TreeItem<String>node){
+//        node.getChildren().forEach(x->{
+//            if(!x.isLeaf()){
+//                lst.add(x.getValue());
+//            }
+//        });
+//    }
+    public void AddtoProjStateList(TreeItem<String> rootNode){
+            //Base Condition for exit from Recursion
+            if(rootNode.isLeaf()){
+                return;
+            }
+            rootNode.getChildren().forEach(x->{
+                
+                //add only those project who is expanded
+                if(x.isLeaf()){
+                    return;
+                }
+                else if(x.isLeaf()==false && x.isExpanded()){
+                    lst.add(x.getValue());
+                    
+                }
+                AddtoProjStateList(x);
+                });
+           System.out.println(lst);
+    }
     
     @Override
     public void start(Stage primaryStage) {
@@ -50,14 +80,26 @@ public class TreeViewIssue extends Application {
         TreeItem<String> node2=new TreeItem<>("Project2");
         TreeItem<String> node3=new TreeItem<>("Project3");
         TreeItem<String> node4=new TreeItem<>("Project4");
+//        
+//        for(int i=1;i<5;i++){
+//            node4.getChildren().add(new TreeItem<String>("File "+i));
+//
+//        }
+        for(int i=1;i<=3;i++){
+        node1.getChildren().add(new TreeItem<String>("proj1File "+i));
+        node2.getChildren().add(new TreeItem<String>("proj2File "+i));
+        node3.getChildren().add(new TreeItem<String>("proj3File "+i));
         
-        for(int i=1;i<5;i++){
-            node1.getChildren().add(new TreeItem<String>("File "+i));
-            node2.getChildren().add(new TreeItem<String>("File "+i));
-            node3.getChildren().add(new TreeItem<String>("File "+i));
-            node4.getChildren().add(new TreeItem<String>("File "+i));
-
         }
+        node1.getChildren().forEach(x->x.getChildren().add(new TreeItem<String>("Child "+1) ));
+        
+        node2.getChildren().forEach(x->x.getChildren().add(new TreeItem<String>("Child "+1) ));
+        
+        node3.getChildren().forEach(x->x.getChildren().add(new TreeItem<String>("Child "+1) ));
+        
+        
+        
+        
         rootNode.getChildren().addAll(node1,node2,node3,node4);
         rootNode.setExpanded(true);
         TreeView treeView =new TreeView();
@@ -70,7 +112,7 @@ public class TreeViewIssue extends Application {
         
      
         for(TreeItem<String> item: rootNode.getChildren()){
-            System.out.println(item.getChildren().size());
+           // System.out.println(item.getChildren().size());
             hMap.put(item.getValue(), Boolean.FALSE);
         }
         //Adding Event handler
@@ -80,13 +122,13 @@ public class TreeViewIssue extends Application {
                  hMap.put(item.getValue(),true);   
                 }
                 
-                System.out.println(hMap);
+                System.out.println("event: "+hMap);
        });
        item.addEventHandler(TreeItem.branchCollapsedEvent(),e->{
                 if(!item.isExpanded()){
                  hMap.put(item.getValue(),false);   
                 }
-                System.out.println(hMap);
+                System.out.println("event: "+hMap);
        });
         
         
@@ -102,6 +144,8 @@ public class TreeViewIssue extends Application {
         cpyToMap(readTasksFile());
         expandTreeView(rootNode,hMap);
         primaryStage.show();
+        AddtoProjStateList(rootNode);
+        
     }
     //on close event
     private void onClose(WindowEvent event){
